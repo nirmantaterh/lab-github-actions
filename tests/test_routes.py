@@ -154,6 +154,31 @@ class ServiceTest(TestCase):
         resp = self.app.get("/counters/foo")
         self.assertEqual(resp.status_code, status.HTTP_503_SERVICE_UNAVAILABLE)
 
+    def test_internal_server_error(self):
+        """It should handle an internal server error"""
+        from service.common.error_handlers import internal_server_error
+
+        message = "Test internal server error"
+
+        with app.app_context():
+            with patch.object(app.logger, "error") as logger_mock:
+                response, status_code = internal_server_error(
+                    Exception(message)
+                )
+
+        self.assertEqual(
+            status_code, status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+        self.assertEqual(
+            response.get_json(),
+            {
+                "status": status.HTTP_500_INTERNAL_SERVER_ERROR,
+                "error": "Internal Server Error",
+                "message": message,
+            },
+        )
+        logger_mock.assert_called_once_with(message)
+
     @patch("service.models.Counter.increment")
     def test_failed_update_request(self, value_mock):
         """It should handle Error for failed UPDATE"""
