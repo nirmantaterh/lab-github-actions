@@ -6,7 +6,7 @@ This is for NYU DevOps lab on using GitHub Actions with Redis for Continuous Int
 
 ## Introduction
 
-This lab contains a `workflow.yml` file in the `.github/workflows/` folder that shows you how to run your tests and start a Redis service be attached while running them. It also uses Code Coverage to determine how complete your testing is.
+This lab contains a `workflow.yml` file in the `.github/workflows/` folder that shows you how to run your tests and start a Redis service be attached while running them. It also uses Code Coverage to determine how complete your testing is
 
 GitHub Actions can be used as an alternative to Travis CI to run tests on every Pull Request to facilitate implementing Continuous Integration for your development team. Every Pull Request is an opportunity for a code review and any Pull Request that lowers the test coverage should be rejected until more test cases are added to bring the coverage back up to the threshold set by the team. (usually 90% to 95%)
 
