@@ -20,13 +20,16 @@ Test cases can be run with the following:
   nosetests -v --with-spec --spec-color
   coverage report -m
 """
+
 import os
 import logging
 from unittest import TestCase
 from unittest.mock import patch
+
 from wsgi import app
 from service.models import Counter, DatabaseConnectionError
 from service.common import status
+from service.common.error_handlers import internal_server_error
 
 # logging.disable(logging.CRITICAL)
 
@@ -36,6 +39,8 @@ DATABASE_URI = os.getenv("DATABASE_URI", "redis://:@localhost:6379/0")
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
+# pylint: disable=too-many-public-methods
 class ServiceTest(TestCase):
     """REST API Server Tests"""
 
@@ -156,8 +161,6 @@ class ServiceTest(TestCase):
 
     def test_internal_server_error(self):
         """It should handle an internal server error"""
-        from service.common.error_handlers import internal_server_error
-
         message = "Test internal server error"
 
         with app.app_context():
